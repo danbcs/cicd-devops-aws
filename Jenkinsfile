@@ -28,7 +28,6 @@ pipeline {
             }
             steps {
                 withKubeConfig(credentialsId: 'kubeconfig') {
-                    sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
                     sh 'aws eks --region $terraform_region update-kubeconfig --name $terraform_cluster_name'
                     sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
