@@ -2,54 +2,50 @@
 
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
-<img src="docs/img/arch-aws.PNG" alt="Arquitetura do Projeto na AWS">
+<img src="assets/arch-aws.png" alt="Arquitetura do Projeto na AWS">
 
-> Esse repositório possui conceitos de docker, kubernetes, terraform, CICD com Jenkins e possui uma aplicação prática para auxiliar no entendimento e melhores práticas envolvendo esses processos.
+> Esse repositório possui conceitos de docker, kubernetes, terraform, CICD com Jenkins e possui uma aplicação prática que pode provissionar na AWS, para auxiliar no entendimento e melhores práticas envolvendo esses processos.
 
 ### Ajustes e melhorias
 
 Abaixo algumas melhorias que serão desenvolvidas nas próximas sprints:
 
-- [x] API Gateway
-- [x] Tracing
-- [x] Security
-- [ ] Event Driven Architecture - Kafka
-- [ ] Distributed Logging - ELK Stack
-- [ ] CD (Docker/Jenkins)
-- [ ] SPA FrontEnd - Angular
-- [ ] Run full AWS
+- [x] Variavéis Jenkins
+- [x] Versão EKS
+- [x] Run full AWS
+- [ ] Parametrizar credenciais de Usuário e Senha Postgres - Jenkinsfile
+- [ ] Parametrizar nome da Imagem docker - Jenkinsfile
 
 ## 💻 Pré-requisitos
 
+Todas as validações foram realizadas em  `Ubuntu 22.4`
 Antes de começar, verifique se você atendeu aos seguintes requisitos:
-* Possui `Maven 3.2+` instalado;
-* `JDK 6+` instalado;
-* Conexão com a Internet, para que o Maven descarregue as dependências;
-* O IDE de sua preferência (Utilizada  `IntelliJ`);
+* Possui `Terraform`, `Kubectl`, `Docker`, `aws cli` instalado;
+* Seguir com a instalação conforme indicado nos sites oficiais;
+* Conexão com a Internet.
 
-## 🚀 Instalando record-microservices
+## 🚀 Instalando Projeto
 
-Para instalar o record-microservices, siga estas etapas.
-Após realizar o download, descompacte-o e execute:
+Para instalar o projeto localmente, siga estas etapas.
+Se tiver dificuldades, veja [esse repositorio](https://github.com/dbent0/conversor-temperatura-docker), detalhando uso de Docker e kubernetes.
 
-Linux e Windows:
+Após realizar o download/clonar, descompacte-o e execute:
+
 ```
-cd record-microservices
+cd src
 ```
-Acessar cada um dos microserviços e executar:
-
-`Client Service`
-`Disk Service`
-`Order Service`
-`Api Gateway`
-`Discovery Server`
+Para gerar a imagem a partir do Dockerfile, executamos o comando abaixo no mesmo local que o arquivo se encontra:
+Dica: seguir o padrão `usuario/nome_da_imagem:versão`
 ```
-mvn spring-boot:run
+docker build -t nome_da_imagem .
 ```
 
 ## ☕ Executando
 
-<img src="docs/img/arch-microservices.PNG" alt="Arquitetura do Projeto na AWS">
+Para criar o container a partir dessa imagem construída, podemos executar o comando:
+```
+docker container run -d -p 8090:8090 nome_da_imagem
+```
 
 ## 📫 Contribuindo para cicd-devops-code
 <!---Se o seu README for longo ou se você tiver algum processo ou etapas específicas que deseja que os contribuidores sigam, considere a criação de um arquivo CONTRIBUTING.md separado--->
