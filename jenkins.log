@@ -1,0 +1,190 @@
+Started by user Daniel Bento
+Obtained Jenkinsfile from git https://github.com/dbent0/cicd-devops-aws.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/cicd-aws-kube-news
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/cicd-aws-kube-news/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/dbent0/cicd-devops-aws.git # timeout=10
+Fetching upstream changes from https://github.com/dbent0/cicd-devops-aws.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.34.1'
+ > git fetch --tags --force --progress -- https://github.com/dbent0/cicd-devops-aws.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+Checking out Revision 739679c55c20eb0b1542ea090a7232101ff347b0 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 739679c55c20eb0b1542ea090a7232101ff347b0 # timeout=10
+Commit message: "Alterando service loadbalancer k8s"
+ > git rev-list --no-walk 739679c55c20eb0b1542ea090a7232101ff347b0 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker build -t danbcs/kube-news:12 -f ./src/Dockerfile ./src
+Sending build context to Docker daemon  1.961MB
+
+Step 1/7 : FROM node:alpine
+ ---> 15f69295346c
+Step 2/7 : WORKDIR /app
+ ---> Using cache
+ ---> f85f97ddca1b
+Step 3/7 : COPY package*.json ./
+ ---> Using cache
+ ---> b8fc30029472
+Step 4/7 : RUN npm install
+ ---> Using cache
+ ---> fd987c923de9
+Step 5/7 : COPY . .
+ ---> Using cache
+ ---> aa803e32445d
+Step 6/7 : EXPOSE 8080
+ ---> Using cache
+ ---> 10b128dd82c2
+Step 7/7 : CMD ["node", "server.js"]
+ ---> Using cache
+ ---> 5fd399ea6795
+Successfully built 5fd399ea6795
+Successfully tagged danbcs/kube-news:12
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Docker Image)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withDockerRegistry
+$ docker login -u danbcs -p ******** https://registry.hub.docker.com
+WARNING! Using --password via the CLI is insecure. Use --password-stdin.
+WARNING! Your password will be stored unencrypted in /var/lib/jenkins/workspace/cicd-aws-kube-news@tmp/6e40d97b-ce21-48f6-b4ee-b391da1e1970/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker tag danbcs/kube-news:12 registry.hub.docker.com/danbcs/kube-news:latest
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker push registry.hub.docker.com/danbcs/kube-news:latest
+The push refers to repository [registry.hub.docker.com/danbcs/kube-news]
+81a0383fc302: Preparing
+9c6c0853b6e0: Preparing
+dbcc3cfc833b: Preparing
+41758cb14b06: Preparing
+0dc878660ac2: Preparing
+7658161b48c8: Preparing
+829071a7d113: Preparing
+994393dc58e7: Preparing
+7658161b48c8: Waiting
+829071a7d113: Waiting
+994393dc58e7: Waiting
+0dc878660ac2: Layer already exists
+41758cb14b06: Layer already exists
+81a0383fc302: Layer already exists
+9c6c0853b6e0: Layer already exists
+dbcc3cfc833b: Layer already exists
+994393dc58e7: Layer already exists
+7658161b48c8: Layer already exists
+829071a7d113: Layer already exists
+latest: digest: sha256:19561faf544079e6d6b5c26cb5499ae698f222f138d81f32484fba2528137bca size: 1995
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker tag danbcs/kube-news:12 registry.hub.docker.com/danbcs/kube-news:12
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker push registry.hub.docker.com/danbcs/kube-news:12
+The push refers to repository [registry.hub.docker.com/danbcs/kube-news]
+81a0383fc302: Preparing
+9c6c0853b6e0: Preparing
+dbcc3cfc833b: Preparing
+41758cb14b06: Preparing
+0dc878660ac2: Preparing
+7658161b48c8: Preparing
+829071a7d113: Preparing
+994393dc58e7: Preparing
+7658161b48c8: Waiting
+829071a7d113: Waiting
+994393dc58e7: Waiting
+41758cb14b06: Layer already exists
+dbcc3cfc833b: Layer already exists
+0dc878660ac2: Layer already exists
+9c6c0853b6e0: Layer already exists
+81a0383fc302: Layer already exists
+994393dc58e7: Layer already exists
+7658161b48c8: Layer already exists
+829071a7d113: Layer already exists
+12: digest: sha256:19561faf544079e6d6b5c26cb5499ae698f222f138d81f32484fba2528137bca size: 1995
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withDockerRegistry
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy Kubernetes)
+[Pipeline] withCredentials
+Masking supported pattern matches of $terraform_cluster_name or $AWS_ACCESS_KEY_ID or $AWS_SECRET_ACCESS_KEY or $AWS_DEFAULT_REGION
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ aws eks --region **** update-kubeconfig --name ****
+Added new context arn:aws:eks:****:556609195389:cluster/**** to /var/lib/jenkins/.kube/config
+[Pipeline] sh
++ kubectl apply -f ./k8s/deployment.yaml
+deployment.apps/postgre created
+service/postgre-cluster-ip created
+deployment.apps/web created
+service/web-load-balancer created
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+

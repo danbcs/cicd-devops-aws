@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 sh 'aws eks --region $AWS_DEFAULT_REGION update-kubeconfig --name $terraform_cluster_name'
-                sh 'kubectl apply -f ./k8s/deployment.yaml'
+                sh 'kubectl apply -f k8s/deployment.yaml'
             }
         }
     }

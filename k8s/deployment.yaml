@@ -39,18 +39,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web
+  name: web-server
 spec:
   selector:
     matchLabels:
-      app: web
+      app: web-server
   template:
     metadata:
       labels:
-        app: web
+        app: web-server
     spec:
       containers:
-        - name: web
+        - name: web-server
           image: danbcs/kube-news:latest
           ports:
             - containerPort: 8080
@@ -70,7 +70,7 @@ metadata:
   name: web-load-balancer
 spec:
   selector:
-    app: web
+    app: web-server
   ports:
     - port: 80
       targetPort: 8080
