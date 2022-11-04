@@ -63,6 +63,7 @@ spec:
               value: "pg#123"
             - name: DB_HOST
               value: "postgre"
+          command: ["/bin/sh", "-ec", "sleep 500"]
 ---
 apiVersion: v1
 kind: Service
