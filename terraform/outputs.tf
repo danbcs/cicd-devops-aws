@@ -22,8 +22,3 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.cluster_name
 }
-
-output "jenkins_ip" {
-  description = "Ipv4 from Jenkins server"
-  value       = module.ec2_instance.public_ip
-}

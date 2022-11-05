@@ -29,3 +29,5 @@
 .terraformrc
 terraform.rc
 .terraform.lock.hcl
+
+src/node_modules
